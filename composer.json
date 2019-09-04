@@ -1,0 +1,13 @@
+{
+    "name": "glavdev/tdlib",
+    "description": "Library for TopDelivery integrations",
+    "type": "lib",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SergeChepikov",
+            "email": "mr.chepikov@gmail.com"
+        }
+    ],
+    "require": {}
+}
