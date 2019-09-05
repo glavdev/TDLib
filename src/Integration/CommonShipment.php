@@ -7,7 +7,7 @@ namespace Integration;
  *
  * @author SergeChepikov
  */
-interface IntegrationShipment
+interface CommonShipment
 {
     /**
      * Информация о поставке

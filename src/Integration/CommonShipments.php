@@ -10,10 +10,10 @@ use Traversable;
  *
  * @author SergeChepikov
  */
-interface IntegrationShipments extends IteratorAggregate
+interface CommonShipments extends IteratorAggregate
 {
     /**
-     * @return Traversable|IntegrationShipment[]
+     * @return Traversable|CommonShipment[]
      */
     public function getIterator(): Traversable;
 }

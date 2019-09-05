@@ -1,9 +1,9 @@
 <?php
 
-namespace Integration\IntegrationShipments;
+namespace Integration\CommonShipments;
 
-use Integration\IntegrationShipment\IntegrationShipmentStd;
-use Integration\IntegrationShipments;
+use Integration\CommonShipment\CommonShipmentStd;
+use Integration\CommonShipments;
 use PDO;
 use Traversable;
 
@@ -12,7 +12,7 @@ use Traversable;
  *
  * @author SergeChepikov
  */
-class IntegrationShipmentsByStatus implements IntegrationShipments
+class CommonShipmentsByStatus implements CommonShipments
 {
     private $status;
     private $db;
@@ -24,7 +24,7 @@ class IntegrationShipmentsByStatus implements IntegrationShipments
     }
 
     /**
-     * @return Traversable|IntegrationShipmentStd[]
+     * @return Traversable|CommonShipmentStd[]
      */
     public function getIterator(): Traversable
     {
@@ -34,7 +34,7 @@ class IntegrationShipmentsByStatus implements IntegrationShipments
             WHERE `status` = " . $this->db->quote($this->status));
 
         foreach ($pkgs as $pkg) {
-            yield new IntegrationShipmentStd($pkg['id'], $this->db);
+            yield new CommonShipmentStd($pkg['id'], $this->db);
         }
     }
 }

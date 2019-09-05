@@ -1,9 +1,9 @@
 <?php
 
-namespace Integration\IntegrationShipment;
+namespace Integration\CommonShipment;
 
 use Exception;
-use Integration\IntegrationShipment;
+use Integration\CommonShipment;
 use PDO;
 
 /**
@@ -11,7 +11,7 @@ use PDO;
  *
  * @author SergeChepikov
  */
-class IntegrationShipmentStd implements IntegrationShipment
+class CommonShipmentStd implements CommonShipment
 {
     private $id;
     private $db;
