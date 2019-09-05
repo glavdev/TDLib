@@ -34,7 +34,7 @@ class IntegrationShipmentsByStatus implements IntegrationShipments
             WHERE `status` = " . $this->db->quote($this->status));
 
         foreach ($pkgs as $pkg) {
-            yield new IntegrationShipmentStd($pkg['id']);
+            yield new IntegrationShipmentStd($pkg['id'], $this->db);
         }
     }
 }
