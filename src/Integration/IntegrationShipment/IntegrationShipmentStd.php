@@ -20,10 +20,10 @@ class IntegrationShipmentStd implements IntegrationShipment
      * @param int $id
      * @param PDO $db
      */
-    public function __construct(int $id, PDO $db = null)
+    public function __construct(int $id, PDO $db)
     {
         $this->id = $id;
-        $this->db = $db ?? getDB();
+        $this->db = $db;
     }
 
     /**

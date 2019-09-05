@@ -17,9 +17,9 @@ class IntegrationShipmentsByStatus implements IntegrationShipments
     private $status;
     private $db;
 
-    public function __construct(string $status, PDO $db = null)
+    public function __construct(string $status, PDO $db)
     {
-        $this->db = $db ?? getDB();
+        $this->db = $db;
         $this->status = $status;
     }
 
