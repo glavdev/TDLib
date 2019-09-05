@@ -11,6 +11,7 @@ use stdClass;
 /**
  * API TopDelivery (SOAP Based)
  *
+ * @link https://docs.topdelivery.ru/pages/soapapi/p/?v=2.0
  * @author SergeChepikov
  */
 class TopDeliveryApiStd implements TopDeliveryApi

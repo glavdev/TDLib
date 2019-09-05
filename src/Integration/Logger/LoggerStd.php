@@ -32,7 +32,7 @@ class LoggerStd implements Logger
     {
         $date = (new DateTime)->format('d.m.Y H:i:s');
         $logEntry = $date . ' ' . $message . "\n";
-        $logPath = dirname(__DIR__) . '/logs/' . ($path ?? $this->path);
+        $logPath = dirname(dirname(dirname(__DIR__))) . '/logs/' . ($path ?? $this->path);
         error_log($logEntry, 3, $logPath);
     }
 }
