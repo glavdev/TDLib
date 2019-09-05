@@ -3,6 +3,7 @@
 namespace Integration\Punkt;
 
 use Exception;
+use Integration\Punkt;
 use PDO;
 
 /**
@@ -16,6 +17,7 @@ class PunktStd implements Punkt
 {
     private $id;
     private $db;
+    private $info;
 
     /**
      * @param int|string $id идентификатор пункта в ГП или в TD
@@ -44,17 +46,19 @@ class PunktStd implements Punkt
 
     private function info(): array
     {
-        $info = $this->db->query("
-            SELECT * 
-            FROM `punkts` 
-            WHERE `gpId` = " . $this->db->quote($this->id) . " 
-            OR `tdId` = " . $this->db->quote($this->id)
-        )->fetch();
+        if (!$this->info) {
+            $this->info = $this->db->query("
+                SELECT * 
+                FROM `punkts` 
+                WHERE `gpId` = " . $this->db->quote($this->id) . " 
+                OR `tdId` = " . $this->db->quote($this->id)
+            )->fetch();
 
-        if ($info === false) {
-            throw new Exception("Пункт с идентификатором {$this->id} не найден.");
+            if ($this->info === false) {
+                throw new Exception("Пункт с идентификатором {$this->id} не найден.");
+            }
         }
 
-        return $info;
+        return $this->info;
     }
 }
