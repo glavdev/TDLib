@@ -9,5 +9,16 @@
             "email": "mr.chepikov@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "ext-soap": "*",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "": [
+                "src/"
+            ]
+        }
+    }
 }
