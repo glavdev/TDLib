@@ -8,7 +8,7 @@ use PDO;
 use Traversable;
 
 /**
- * Список поставок в БД интеграции по статусу
+ * Список поставок, находящиеся в БД интеграции, по статусу
  *
  * @author SergeChepikov
  */
@@ -31,8 +31,7 @@ class IntegrationShipmentsByStatus implements IntegrationShipments
         $pkgs = $this->db->query("
             SELECT * 
             FROM `shipments` 
-            WHERE `status` = " . $this->db->quote($this->status) . " 
-        ");
+            WHERE `status` = " . $this->db->quote($this->status));
 
         foreach ($pkgs as $pkg) {
             yield new IntegrationShipmentStd($pkg['id']);
