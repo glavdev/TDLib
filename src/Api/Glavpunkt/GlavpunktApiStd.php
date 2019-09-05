@@ -3,6 +3,8 @@
 namespace Api\Glavpunkt;
 
 use Exception;
+use Integration\Logger;
+use Integration\Logger\LoggerStd;
 
 /**
  * API Главпункта
@@ -15,19 +17,22 @@ class GlavpunktApiStd implements GlapunktApi
     private $token;
     private $basicUrl;
     private $headers;
+    private $logger;
 
     /**
      * @param string $login логин пользователя
      * @param string $token токен
      * @param string $url адрес отправки запроса (напр. /api/take_pkgs)
      * @param array $headers массив заголовков запроса
+     * @param Logger $logger логирование
      */
-    public function __construct(string $login, string $token, string $url, array $headers = [])
+    public function __construct(string $login, string $token, string $url, array $headers = [], Logger $logger = null)
     {
         $this->login = $login;
         $this->token = $token;
         $this->basicUrl = $url;
         $this->headers = $headers;
+        $this->logger = $logger ?? new LoggerStd("gp_api.log");
     }
 
     /**
@@ -70,9 +75,7 @@ class GlavpunktApiStd implements GlapunktApi
         }
         curl_close($curl);
 
-        logmsg("[POST to $url] REQUEST = " . $requestJson . PHP_EOL . "ANSWER = " . $answerJson,
-            "gp_api.log"
-        );
+        $this->logger->log("[POST to $url] REQUEST = " . $requestJson . PHP_EOL . "ANSWER = " . $answerJson);
 
         $answer = json_decode($answerJson, true);
 
@@ -110,7 +113,7 @@ class GlavpunktApiStd implements GlapunktApi
         ]);
         $answerJson = curl_exec($curl);
 
-        logmsg("[GET to $url] " . $answerJson, "gp_api.log");
+        $this->logger->log("[GET to $url] " . $answerJson);
 
         if ($answerJson === false) {
             throw new Exception("GET запрос вернул ошибку (url=" . $url . ") " . curl_error($curl));
