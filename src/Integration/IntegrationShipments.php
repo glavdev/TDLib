@@ -6,7 +6,7 @@ use IteratorAggregate;
 use Traversable;
 
 /**
- * Поставки, находящиеся в БД интеграции
+ * Поставки от ТопДеливери, находящиеся в БД интеграции
  *
  * @author SergeChepikov
  */

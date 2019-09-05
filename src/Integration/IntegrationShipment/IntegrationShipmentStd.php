@@ -7,7 +7,7 @@ use Integration\IntegrationShipment;
 use PDO;
 
 /**
- * Поставка от ТопДеливери в БД интеграции
+ * Поставка от ТопДеливери, находящаяся в БД интеграции
  *
  * @author SergeChepikov
  */
