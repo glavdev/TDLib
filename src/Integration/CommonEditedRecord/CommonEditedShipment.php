@@ -27,7 +27,7 @@ class CommonEditedShipment implements CommonEditedRecord
      */
     public function edit(array $params): void
     {
-        $validFields = ['move_id', 'status'];
+        $validFields = ['move_id', 'status', 'account_id'];
         $sqlSetPart = [];
         foreach ($params as $key => $value) {
             if (in_array($key, $validFields)) {
