@@ -4,6 +4,7 @@ namespace TopDelivery\TDOrder;
 
 use Api\TopDelivery\TopDeliveryApi;
 use stdClass;
+use TopDelivery\TDOrder;
 use Traversable;
 
 /**
@@ -13,7 +14,7 @@ use Traversable;
  *
  * @author SergeChepikov
  */
-class TDOrderStd
+class TDOrderStd implements TDOrder
 {
     private $id;
     private $api;
