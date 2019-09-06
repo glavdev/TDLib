@@ -5,8 +5,8 @@ namespace Integration\CommonOrders;
 use Integration\CommonOrder;
 use Integration\CommonOrder\CommonOrderStd;
 use Integration\CommonOrders;
+use Integration\CommonShipment;
 use PDO;
-use TopDelivery\TDShipment;
 use Traversable;
 
 /**
@@ -19,7 +19,7 @@ class CommonOrdersByShipment implements CommonOrders
     private $shipment;
     private $db;
 
-    public function __construct(TDShipment $shipment, PDO $db)
+    public function __construct(CommonShipment $shipment, PDO $db)
     {
         $this->shipment = $shipment;
         $this->db = $db;
