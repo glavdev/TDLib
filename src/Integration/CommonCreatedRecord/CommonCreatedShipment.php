@@ -1,8 +1,8 @@
 <?php
 
-namespace Integration\CommonCreatedShipment;
+namespace Integration\CommonCreatedRecord;
 
-use Integration\CommonCreatedShipment;
+use Integration\CommonCreatedRecord;
 use Integration\Punkt;
 use Integration\Punkt\PunktStd;
 use PDO;
@@ -13,7 +13,7 @@ use TopDelivery\TDShipment;
  *
  * @author SergeChepikov
  */
-class CommonCreatedShipmentStd implements CommonCreatedShipment
+class CommonCreatedShipment implements CommonCreatedRecord
 {
     private $shipment;
     private $db;
@@ -45,6 +45,6 @@ class CommonCreatedShipmentStd implements CommonCreatedShipment
         $query = $this->db->prepare($sql);
         $query->execute($data);
 
-        return $this->db->lastInsertId();
+        return $shipmentInfo['id'];
     }
 }

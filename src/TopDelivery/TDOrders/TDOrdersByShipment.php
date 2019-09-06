@@ -3,6 +3,7 @@
 namespace TopDelivery\TDOrders;
 
 use Api\TopDelivery\TopDeliveryApi;
+use Exception;
 use TopDelivery\TDOrder;
 use TopDelivery\TDOrder\TDOrderStd;
 use TopDelivery\TDOrders;
@@ -32,10 +33,15 @@ class TDOrdersByShipment implements TDOrders
      */
     public function getIterator(): Traversable
     {
+        $shipmentInfo = $this->shipment->info();
         $params = [
-            'currentShipment' => $this->shipment->info()['id']
+            'currentShipment' => $shipmentInfo['id']
         ];
-        $orders = $this->api->doRequest('getOrdersByParams', $params)->orderInfo;
+        $orders = $this->api->doRequest('getOrdersByParams', $params);
+        if (!isset($orders->orderInfo)) {
+            throw new Exception("Не передан ни один заказ в отправке {$shipmentInfo['id']}");
+        }
+        $orders = $orders->orderInfo;
         // Если в списке только один заказ
         if (isset($orders->orderIdentity)) {
             $orders = [$orders];
