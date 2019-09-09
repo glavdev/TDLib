@@ -4,13 +4,9 @@ namespace Glavpunkt\GpCreatedShipment;
 
 use Api\Glavpunkt\GlapunktApi;
 use Exception;
-use Glavpunkt\GpCreatedOrders;
-use Glavpunkt\GpCreatedOrders\GpCreatedOrdersStd;
+use Glavpunkt\GpPreparedOrders;
 use Glavpunkt\GpCreatedShipment;
-use Integration\CommonOrders\CommonOrdersByShipment;
-use Integration\CommonShipment;
 use Integration\Punkt;
-use PDO;
 
 /**
  * Созданная накладная в системе ГП
@@ -22,9 +18,9 @@ class GpCreatedShipmentStd implements GpCreatedShipment
     private $api;
     private $orders;
 
-    public function __construct(CommonShipment $shipment, PDO $db, GlapunktApi $api, GpCreatedOrders $orders = null)
+    public function __construct(GpPreparedOrders $orders, GlapunktApi $api)
     {
-        $this->orders = $orders ?? new GpCreatedOrdersStd(new CommonOrdersByShipment($shipment, $db));
+        $this->orders = $orders;
         $this->api = $api;
     }
 
