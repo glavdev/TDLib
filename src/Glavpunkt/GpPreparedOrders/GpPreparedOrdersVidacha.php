@@ -1,18 +1,18 @@
 <?php
 
-namespace Glavpunkt\GpCreatedOrders;
+namespace Glavpunkt\GpPreparedOrders;
 
-use Glavpunkt\GpCreatedOrders;
+use Glavpunkt\GpPreparedOrders;
 use Integration\CommonOrder;
 use Integration\CommonOrders;
 use Traversable;
 
 /**
- * Заказы, подготовленные к вгрузке в Главпункт
+ * Заказы на выдачу, подготовленные к вгрузке в Главпункт
  *
  * @author SergeChepikov
  */
-class GpCreatedOrdersStd implements GpCreatedOrders
+class GpPreparedOrdersVidacha implements GpPreparedOrders
 {
     private $orders;
 

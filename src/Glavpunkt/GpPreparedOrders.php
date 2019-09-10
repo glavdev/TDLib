@@ -6,11 +6,11 @@ use IteratorAggregate;
 use Traversable;
 
 /**
- * Созданные заказы в Главпункт
+ * Подготовленные заказы к вгрузке в систему Главпункт
  *
  * @author SergeChepikov
  */
-interface GpCreatedOrders extends IteratorAggregate
+interface GpPreparedOrders extends IteratorAggregate
 {
     /**
      * Список заказов для вгрузки в Главпункт
