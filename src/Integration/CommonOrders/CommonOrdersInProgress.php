@@ -34,7 +34,7 @@ class CommonOrdersInProgress implements CommonOrders
         $pkgs = $this->db->query("
             SELECT td_id
             FROM orders
-            WHERE gp_status NOT IN ('completed', 'returned')
+            WHERE gp_status NOT IN ('completed', 'returned', 'partly-completed')
         ");
 
         foreach ($pkgs as $pkg) {
