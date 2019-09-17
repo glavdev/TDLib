@@ -35,6 +35,7 @@ class CommonOrdersInProgress implements CommonOrders
             SELECT td_id
             FROM orders
             WHERE gp_status NOT IN ('completed', 'returned', 'partly-completed')
+            OR gp_status IS NULL
         ");
 
         foreach ($pkgs as $pkg) {
