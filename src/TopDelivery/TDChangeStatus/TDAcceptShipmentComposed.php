@@ -69,8 +69,10 @@ class TDAcceptShipmentComposed implements TDChangeStatus
 
         if (count($this->acceptedOrders) === count($this->orderList)) {
             $this->accept->do();
+            $this->editedStatus->edit("accepted");
         } else {
             $this->partlyAccept->do();
+            $this->editedStatus->edit("partly-accepted");
         }
     }
 }
