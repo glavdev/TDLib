@@ -3,6 +3,8 @@
 namespace TopDelivery\TDChangeStatus;
 
 use Api\TopDelivery\TopDeliveryApi;
+use Integration\CommonEditedStatus;
+use Integration\CommonEditedStatus\CommonEditedShipmentStatus;
 use Integration\CommonShipment;
 use TopDelivery\TDChangeStatus;
 
@@ -18,6 +20,7 @@ class TDAcceptShipmentComposed implements TDChangeStatus
     private $accept;
     private $orderList;
     private $acceptedOrders;
+    private $editedStatus;
 
     /**
      * @param CommonShipment $shipment
@@ -25,6 +28,7 @@ class TDAcceptShipmentComposed implements TDChangeStatus
      * @param array $acceptedOrders список принятых заказов в поставке
      * @param TopDeliveryApi $api
      * @param string $mailTo почтовый ящик, куда необходимо отправлять письма о неполных поставках
+     * @param CommonEditedStatus $editedStatus измененный статус отправки
      * @param TDChangeStatus $partlyAccept действие для частичного принятия поставки
      * @param TDChangeStatus $accept действие для полного принятия поставки
      */
@@ -34,12 +38,14 @@ class TDAcceptShipmentComposed implements TDChangeStatus
         array $acceptedOrders,
         TopDeliveryApi $api,
         string $mailTo,
+        CommonEditedStatus $editedStatus,
         TDChangeStatus $partlyAccept = null,
         TDChangeStatus $accept = null
     ) {
         $this->shipment = $shipment;
         $this->orderList = $orderList;
         $this->acceptedOrders = $acceptedOrders;
+        $this->editedStatus = $editedStatus;
         $this->partlyAccept = $partlyAccept
             ?? new TDPartlyAcceptShipment($shipment, $acceptedOrders, $orderList, $api, $mailTo);
         $this->accept = $accept ?? new TDAcceptShipment($shipment, $acceptedOrders, $api);
