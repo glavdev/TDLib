@@ -1,6 +1,6 @@
 {
     "name": "glavdev/tdlib",
-    "version": "0.0.7-dev",
+    "version": "0.0.8-dev",
     "description": "Library for TopDelivery integrations",
     "type": "lib",
     "license": "MIT",

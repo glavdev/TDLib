@@ -40,14 +40,16 @@ class CommonEditedOrderStatus implements CommonEditedStatus
         if (!in_array($status, $validStatuses)) {
             throw new Exception("Статус $status не является валидным статусом заказа");
         }
-        $this->editedRecord->edit(['status' => $status]);
-        $this->db->query("
-            INSERT INTO `orders_log` (`order_id`, `status`, `date`)
-            VALUES (
-                " . $this->db->quote($this->order->info()['td_id']) . ", 
-                " . $this->db->quote($status) . ", 
-                now()
-            );
-        ");
+        if ($status !== $this->order->info()['gp_status']) {
+            $this->editedRecord->edit(['status' => $status]);
+            $this->db->query("
+                INSERT INTO `orders_log` (`order_id`, `status`, `date`)
+                VALUES (
+                    " . $this->db->quote($this->order->info()['td_id']) . ", 
+                    " . $this->db->quote($status) . ", 
+                    now()
+                );
+            ");
+        }
     }
 }
