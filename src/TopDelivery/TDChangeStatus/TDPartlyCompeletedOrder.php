@@ -4,6 +4,8 @@ namespace TopDelivery\TDChangeStatus;
 
 
 use Api\TopDelivery\TopDeliveryApi;
+use Exception;
+use Glavpunkt\GpOrderStatus;
 use Integration\CommonOrder;
 use TopDelivery\TDChangeStatus;
 
@@ -14,17 +16,15 @@ use TopDelivery\TDChangeStatus;
  */
 class TDPartlyCompeletedOrder implements TDChangeStatus
 {
-    private $detailedGpStatus;
+    private $gpOrderStatus;
     private $api;
     private $order;
-    private $paymentType;
 
-    public function __construct(CommonOrder $order, array $detailedGpStatus, string $paymentType, TopDeliveryApi $api)
+    public function __construct(CommonOrder $order, GpOrderStatus $gpOrderStatus, TopDeliveryApi $api)
     {
-        $this->detailedGpStatus = $detailedGpStatus;
+        $this->gpOrderStatus = $gpOrderStatus;
         $this->api = $api;
         $this->order = $order;
-        $this->paymentType = $paymentType;
     }
 
     /**
@@ -38,7 +38,7 @@ class TDPartlyCompeletedOrder implements TDChangeStatus
         foreach ($this->order->parts() as $part) {
             $count = 0;
             // Просматриваем выданные заказы и ищем текущий
-            foreach ($this->detailedGpStatus['parts'] as $returnPkg) {
+            foreach ($this->gpOrderStatus->parts() as $returnPkg) {
                 if ($returnPkg['name'] === $part['name'] . " " . $part['id']) {
                     $count = $returnPkg['count'];
                     break;
@@ -81,12 +81,32 @@ class TDPartlyCompeletedOrder implements TDChangeStatus
                 ],
                 'items' => $items, // состав заказа
                 'dateFactDelivery' => date("Y-m-d"),
-                'clientPaid' => $this->detailedGpStatus['price'],
+                'clientPaid' => $this->gpOrderStatus->price(),
                 'deliveryPaid' => 1,
-                'paymentType' => $this->paymentType
+                'paymentType' => $this->paymentType()
             ]
         ];
 
         $this->api->doRequest('setOrdersFinalStatus', $params);
+    }
+
+    /**
+     * Способ оплаты заказа
+     *
+     * @return string
+     */
+    private function paymentType(): string
+    {
+        switch ($this->gpOrderStatus->paymentType()) {
+            case "cash":
+                return "CASH";
+            case "credit":
+                return "CARD";
+            case "prepaid":
+                return "CASH";
+            default:
+                throw new Exception("В заказе {$this->order->info()['sku']} Способ оплаты  " .
+                    $this->gpOrderStatus->paymentType() . " неизвестен.");
+        }
     }
 }
