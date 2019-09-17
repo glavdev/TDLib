@@ -71,7 +71,9 @@ class GlavpunktApiStd implements GlapunktApi
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         $answerJson = curl_exec($curl);
         if ($answerJson === false) {
-            throw new Exception("POST запрос вернул ошибку (url=" . $url . ") " . curl_error($curl));
+            throw new Exception("POST запрос вернул ошибку (url=" . $url . ") " .
+                "\n запрос: " . print_r($params, true) . "\n" .
+                curl_error($curl));
         }
         curl_close($curl);
 

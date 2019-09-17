@@ -66,6 +66,7 @@ class TopDeliveryApiStd implements TopDeliveryApi
             $this->logger->log("[REQUEST from $method] " . print_r($params, true), "tdi_api_error.log");
             $this->logger->log("[ANSWER from $method] " . print_r($result, true), "tdi_api_error.log");
             throw new Exception("Запрос {$method} окончился ошибкой {$result->requestResult->message}. " .
+                "Отправлен запрос: " . print_r($params, true) . "\n" .
                 "Получен ответ: " . print_r($result, true));
         }
 
