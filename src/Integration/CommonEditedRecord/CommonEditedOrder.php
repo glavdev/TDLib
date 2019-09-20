@@ -15,11 +15,18 @@ class CommonEditedOrder implements CommonEditedRecord
 {
     private $order;
     private $db;
+    private $extraValidFields;
 
-    public function __construct(CommonOrder $order, PDO $db)
+    /**
+     * @param CommonOrder $order заказ в интеграции
+     * @param PDO $db база данных
+     * @param array $extraValidFields дополнительные поля, которые можно изменять в базе у заказа
+     */
+    public function __construct(CommonOrder $order, PDO $db, array $extraValidFields = [])
     {
         $this->db = $db;
         $this->order = $order;
+        $this->extraValidFields = $extraValidFields;
     }
 
     /**
@@ -27,10 +34,12 @@ class CommonEditedOrder implements CommonEditedRecord
      */
     public function edit(array $params): void
     {
-        $validFields = [
+        $validFields = array_merge([
             'gp_status', 'td_status_id', 'td_status_name', 'account_id',
-            'return_shipment_id', 'pkg_partial', 'account_id', 'serv'
-        ];
+            'return_shipment_id', 'pkg_partial'
+        ],
+            $this->extraValidFields
+        );
         $sqlSetPart = [];
         foreach ($params as $key => $value) {
             if (in_array($key, $validFields)) {
