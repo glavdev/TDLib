@@ -29,7 +29,7 @@ class CommonEditedOrder implements CommonEditedRecord
     {
         $validFields = [
             'gp_status', 'td_status_id', 'td_status_name', 'account_id',
-            'return_shipment_id', 'pkg_partial', 'account_id'
+            'return_shipment_id', 'pkg_partial', 'account_id', 'serv'
         ];
         $sqlSetPart = [];
         foreach ($params as $key => $value) {
