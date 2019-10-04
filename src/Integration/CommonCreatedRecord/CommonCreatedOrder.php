@@ -74,16 +74,17 @@ class CommonCreatedOrder implements CommonCreatedRecord
                 'td_status_id' => $part['tdStatusId'],
                 'td_status_name' => $part['tdStatusName'],
                 'name' => $part['name'],
-                'price' => $part['price'],
+                'price' => $part['clientPrice'], // к оплате клиентом
+                'declared_price' => $part['declaredPrice'], // объявленная стоимость
                 'barcode' => $part['barcode'],
                 'num' => $part['num'],
                 'article' => $part['article'],
                 'weight' => $part['weight']
             ];
             $sql = "INSERT INTO `order_part` (`order_id`, `id`, `td_status_id`, `td_status_name`, `name`,
-                `price`, `barcode`, `num`, `article`, `weight`)
+                `price`, `barcode`, `num`, `article`, `weight`, `declared_price`)
                 VALUES (:order_id, :id, :td_status_id, :td_status_name, :name, :price, :barcode, :num, 
-                :article, :weight);";
+                :article, :weight, :declared_price);";
             $query = $this->db->prepare($sql);
             $query->execute($data);
         }

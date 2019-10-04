@@ -33,11 +33,13 @@ class GpCreatedShipmentStd implements GpCreatedShipment
     public function create(Punkt $punkt): int
     {
         $invoice = [
-            'punkt_id' => $punkt->gpId(),
-            'orders' => iterator_to_array($this->orders),
-            'comments_client' => ''
+            'shipment_options' => [
+                'method' => 'self_delivery',
+                'punkt_id' => $punkt->gpId()
+            ],
+            'orders' => iterator_to_array($this->orders)
         ];
-        $result = $this->api->postRequest('/api/take_pkgs', $invoice);
+        $result = $this->api->postRequest('/api/create_shipment', $invoice);
 
         if ($result['result'] == "ok") {
             return $result['docnum'];
