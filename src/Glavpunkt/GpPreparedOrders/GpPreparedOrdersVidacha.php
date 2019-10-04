@@ -31,23 +31,23 @@ class GpPreparedOrdersVidacha implements GpPreparedOrders
         foreach ($this->orders as $order) {
             $pkgInfo = $order->info();
             yield [
-                'serv' => 'выдача',
-                'sku' => $pkgInfo['sku'],
-                'price' => $pkgInfo['price'],
+                "serv" => "выдача",
+                "pvz_id" => $pkgInfo['dst_punkt_id'],
+                "sku" => $pkgInfo['sku'],
+                // Сумма к получению. Если передан 0, значит заказ предоплачен.
+                "price" => $pkgInfo['price'] + $pkgInfo['client_delivery_price'],
+                "insurance_val" => $this->insuranceVal($order), // Оценочная (страховая) стоимость заказа
+                "weight" => $pkgInfo['weight'], // Общий вес в кг.
                 'primerka' => 0,
-                'client_delivery_price' => $pkgInfo['client_delivery_price'],
-                'weight' => $pkgInfo['weight'],
                 'barcode' => $pkgInfo['barcode'],
-                'is_prepaid' => ($pkgInfo['price'] == 0),
                 'buyer_fio' => $pkgInfo['td_id'] . " " . $pkgInfo['buyer_fio'],
                 'buyer_phone' => $pkgInfo['buyer_phone'],
                 'comment' => $pkgInfo['comment'],
-                'dst_punkt_id' => $pkgInfo['dst_punkt_id'],
                 'items_count' => $pkgInfo['items_count'],
                 // если предоплачено, то запрещаем частичную выдачу
                 'partial_giveout_enabled' => ($pkgInfo['price'] == 0 ? 0 : $pkgInfo['partial_giveout_enabled']),
                 'can_open_box' => $pkgInfo['can_open_box'],
-                'parts' => $this->parts($order)
+                "parts" => $this->parts($order), // Номенклатура заказа
             ];
         }
     }
@@ -65,10 +65,28 @@ class GpPreparedOrdersVidacha implements GpPreparedOrders
             $parts[] = [
                 'name' => $part['name'] . " " . $part['id'],
                 'price' => $part['price'],
-                'num' => $part['num']
+                'insurance_val' => $part['declaredPrice'],
+                'num' => $part['num'],
+                'weight' => $part['weight'] / 1000
             ];
         }
 
         return $parts;
+    }
+
+    /**
+     * Оценочная (страховая) стоимость заказа
+     *
+     * @param CommonOrder $order
+     * @return float
+     */
+    private function insuranceVal(CommonOrder $order): float
+    {
+        $insuranceVal = 0;
+        foreach ($order->parts() as $part) {
+            $insuranceVal += $part['price'] * $part['num'];
+        }
+
+        return $insuranceVal;
     }
 }
