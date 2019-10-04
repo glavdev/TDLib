@@ -66,7 +66,7 @@ class GpPreparedOrdersVidacha implements GpPreparedOrders
             $parts[] = [
                 'name' => $part['name'] . " " . $part['id'],
                 'price' => $part['price'],
-                'insurance_val' => $part['declaredPrice'],
+                'insurance_val' => $part['declared_price'],
                 'num' => $part['num'],
                 'weight' => $part['weight'] / 1000
             ];
