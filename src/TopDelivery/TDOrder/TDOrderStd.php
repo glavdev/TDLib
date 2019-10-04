@@ -44,7 +44,7 @@ class TDOrderStd implements TDOrder
             'tdStatusName' => $order->orderInfo->status->name,
             'serv' => 'выдача',
             'sku' => $order->orderInfo->orderIdentity->webshopNumber,
-            'price' => $order->orderInfo->clientFullCost - $order->orderInfo->clientDeliveryCost,
+            'price' => $order->orderInfo->clientFullCost,
             'primerka' => 0,
             'client_delivery_price' => $order->orderInfo->clientDeliveryCost,
             'weight' => ceil((int)$order->orderInfo->deliveryWeight->weight / 1000),
