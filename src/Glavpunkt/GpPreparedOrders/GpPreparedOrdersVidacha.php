@@ -35,8 +35,7 @@ class GpPreparedOrdersVidacha implements GpPreparedOrders
                 'pvz_id' => $pkgInfo['dst_punkt_id'],
                 'sku' => $pkgInfo['sku'],
                 // Сумма к получению. Если передан 0, значит заказ предоплачен.
-                // @todo #58 убрать использование client_delivery_price, оставить только загрузку в базу
-                'price' => $pkgInfo['price'] + $pkgInfo['client_delivery_price'],
+                'price' => $pkgInfo['price'],
                 'insurance_val' => $this->insuranceVal($order), // Оценочная (страховая) стоимость заказа
                 'weight' => $pkgInfo['weight'], // Общий вес в кг.
                 'primerka' => 0,
