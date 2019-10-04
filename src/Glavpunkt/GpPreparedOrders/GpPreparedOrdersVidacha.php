@@ -85,7 +85,7 @@ class GpPreparedOrdersVidacha implements GpPreparedOrders
     {
         $insuranceVal = 0;
         foreach ($order->parts() as $part) {
-            $insuranceVal += $part['price'] * $part['num'];
+            $insuranceVal += $part['declared_price'] * $part['num'];
         }
 
         return $insuranceVal;
