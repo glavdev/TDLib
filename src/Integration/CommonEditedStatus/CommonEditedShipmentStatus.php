@@ -33,7 +33,7 @@ class CommonEditedShipmentStatus implements CommonEditedStatus
      */
     public function edit(string $status): void
     {
-        $validStatuses = ['none', 'created', 'accepted', 'partly-accepted'];
+        $validStatuses = ['none', 'created', 'accepted', 'partly-accepted', 'pre-accepted'];
         if (!in_array($status, $validStatuses)) {
             throw new Exception("Статус $status не является валидным статусом отправки");
         }
