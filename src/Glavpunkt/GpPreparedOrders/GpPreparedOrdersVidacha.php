@@ -31,14 +31,14 @@ class GpPreparedOrdersVidacha implements GpPreparedOrders
         foreach ($this->orders as $order) {
             $pkgInfo = $order->info();
             yield [
-                "serv" => "выдача",
-                "pvz_id" => $pkgInfo['dst_punkt_id'],
-                "sku" => $pkgInfo['sku'],
+                'serv' => "выдача",
+                'pvz_id' => $pkgInfo['dst_punkt_id'],
+                'sku' => $pkgInfo['sku'],
                 // Сумма к получению. Если передан 0, значит заказ предоплачен.
                 // @todo #58 убрать использование client_delivery_price, оставить только загрузку в базу
-                "price" => $pkgInfo['price'] + $pkgInfo['client_delivery_price'],
-                "insurance_val" => $this->insuranceVal($order), // Оценочная (страховая) стоимость заказа
-                "weight" => $pkgInfo['weight'], // Общий вес в кг.
+                'price' => $pkgInfo['price'] + $pkgInfo['client_delivery_price'],
+                'insurance_val' => $this->insuranceVal($order), // Оценочная (страховая) стоимость заказа
+                'weight' => $pkgInfo['weight'], // Общий вес в кг.
                 'primerka' => 0,
                 'barcode' => $pkgInfo['barcode'],
                 'buyer_fio' => $pkgInfo['td_id'] . " " . $pkgInfo['buyer_fio'],
@@ -48,7 +48,7 @@ class GpPreparedOrdersVidacha implements GpPreparedOrders
                 // если предоплачено, то запрещаем частичную выдачу
                 'partial_giveout_enabled' => ($pkgInfo['price'] == 0 ? 0 : $pkgInfo['partial_giveout_enabled']),
                 'can_open_box' => $pkgInfo['can_open_box'],
-                "parts" => $this->parts($order), // Номенклатура заказа
+                'parts' => $this->parts($order), // Номенклатура заказа
             ];
         }
     }
