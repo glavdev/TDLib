@@ -60,6 +60,7 @@ class GpPreparedOrdersVidacha implements GpPreparedOrders
      */
     private function parts(CommonOrder $order): array
     {
+        $orderInfo = $order->info();
         $parts = [];
         foreach ($order->parts() as $part) {
             $parts[] = [
@@ -68,6 +69,13 @@ class GpPreparedOrdersVidacha implements GpPreparedOrders
                 'insurance_val' => $part['declared_price'],
                 'num' => $part['num'],
                 'weight' => $part['weight'] / 1000
+            ];
+        }
+        if ($orderInfo['client_delivery_price'] > 0) {
+            $parts[] = [
+                'name' => "Стоимость доставки (обязательно к оплате!)",
+                'price' => $orderInfo['client_delivery_price'],
+                'insurance_val' => 0
             ];
         }
 
