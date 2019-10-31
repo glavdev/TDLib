@@ -50,6 +50,7 @@ class TDOrderStd implements TDOrder
             'weight' => ceil((int)$order->orderInfo->deliveryWeight->weight / 1000),
             'barcode' => $order->orderInfo->orderIdentity->barcode,
             'is_prepaid' => '',
+            'events' => $order->orderInfo->events,
             'buyer_fio' => $order->orderInfo->clientInfo->fio,
             'buyer_phone' => $order->orderInfo->clientInfo->phone,
             'comment' => $order->orderInfo->clientInfo->comment,
