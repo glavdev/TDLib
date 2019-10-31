@@ -50,8 +50,8 @@ class PunktStd implements Punkt
             $this->info = $this->db->query("
                 SELECT * 
                 FROM `punkts` 
-                WHERE `gpId` = " . $this->db->quote($this->id) . " 
-                OR `tdId` = " . $this->db->quote($this->id)
+                WHERE `gpId` LIKE " . $this->db->quote($this->id) . " 
+                OR `tdId` LIKE " . $this->db->quote($this->id)
             )->fetch();
 
             if ($this->info === false) {
