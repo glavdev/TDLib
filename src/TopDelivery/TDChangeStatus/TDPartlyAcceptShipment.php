@@ -6,6 +6,7 @@ use Api\TopDelivery\TopDeliveryApi;
 use DateTime;
 use Integration\CommonOrder;
 use Integration\CommonShipment;
+use Integration\Mailer;
 use TopDelivery\TDChangeStatus;
 
 /**
@@ -19,14 +20,14 @@ class TDPartlyAcceptShipment implements TDChangeStatus
     private $shipment;
     private $acceptedOrders;
     private $orderList;
-    private $mailTo;
+    private $mail;
 
     /**
      * @param CommonShipment $shipment поставка в интеграции
      * @param CommonOrder[] $acceptedOrders принятые заказы в поставке с ключом в виде идентификатора
      * @param CommonOrder[] $orderList полный список заказов в поставке
      * @param TopDeliveryApi $api
-     * @param string $mailTo почтовый ящик, куда необходимо отправлять письма о неполных поставках
+     * @param Mailer $mail почтовый ящик, куда необходимо отправлять письма о неполных поставках
      * @param TDChangeStatus $accept действие по принятию поставки
      */
     public function __construct(
@@ -34,13 +35,13 @@ class TDPartlyAcceptShipment implements TDChangeStatus
         array $acceptedOrders,
         array $orderList,
         TopDeliveryApi $api,
-        string $mailTo,
+        Mailer $mail,
         TDChangeStatus $accept = null
     ) {
         $this->shipment = $shipment;
         $this->acceptedOrders = $acceptedOrders;
         $this->orderList = $orderList;
-        $this->mailTo = $mailTo;
+        $this->mail = $mail;
         $this->accept = $accept ?? new TDAcceptShipment($shipment, $acceptedOrders, $api);
     }
 
@@ -59,7 +60,7 @@ class TDPartlyAcceptShipment implements TDChangeStatus
             $mailText .= "Заказ №{$orderInfo['sku']} с идентификатором ТД {$orderInfo['td_id']}: ";
             $mailText .= isset($this->acceptedOrders[$orderInfo['td_id']]) ? "<b>принят</b>\n" : "<b>не принят</b>\n";
         }
-        mail($this->mailTo, $mailTheme, $mailText);
+        $this->mail->send($mailTheme, $mailText);
         $this->accept->do();
     }
 }
