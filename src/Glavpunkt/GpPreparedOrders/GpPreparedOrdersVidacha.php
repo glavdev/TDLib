@@ -73,7 +73,7 @@ class GpPreparedOrdersVidacha implements GpPreparedOrders
         }
         if ($orderInfo['client_delivery_price'] > 0) {
             $parts[] = [
-                'name' => "Стоимость доставки (обязательно к оплате!)",
+                'name' => "Стоимость доставки",
                 'price' => $orderInfo['client_delivery_price'],
                 'insurance_val' => 0
             ];
