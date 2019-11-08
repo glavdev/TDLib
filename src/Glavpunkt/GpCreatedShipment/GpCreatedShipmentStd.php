@@ -46,7 +46,8 @@ class GpCreatedShipmentStd implements GpCreatedShipment
         } else {
             throw new Exception("
                 Создание накладной не произошло из-за ошибки API 
-                take_pkgs вернул: " . print_r($result, true));
+                create_shipment вернул: " . print_r($result, true) .
+                " При запросе: " . print_r($invoice, true));
         }
     }
 }
