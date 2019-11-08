@@ -3,8 +3,11 @@
 namespace Integration\CommonShipment;
 
 use Exception;
+use Integration\CommonOrder;
+use Integration\CommonOrder\CommonOrderStd;
 use Integration\CommonShipment;
 use PDO;
+use Traversable;
 
 /**
  * Поставка от ТопДеливери, находящаяся в БД интеграции
@@ -49,5 +52,22 @@ class CommonShipmentStd implements CommonShipment
         }
 
         return $info;
+    }
+
+    /**
+     * Список заказов в поставке
+     *
+     * @return Traversable|CommonOrder[]
+     */
+    public function orders(): Traversable
+    {
+        $orders = $this->db->query("
+            SELECT *
+            FROM `orders`
+            WHERE `shipment_id` = " . $this->db->quote($this->id));
+
+        foreach ($orders as $order) {
+            yield new CommonOrderStd($order['td_id'], $this->db);
+        }
     }
 }
