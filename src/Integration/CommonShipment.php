@@ -2,6 +2,8 @@
 
 namespace Integration;
 
+use Traversable;
+
 /**
  * Поставка от ТопДеливери, находящаяся в БД интеграции
  *
@@ -21,4 +23,11 @@ interface CommonShipment
      *  ]
      */
     public function info(): array;
+
+    /**
+     * Список заказов в поставке
+     *
+     * @return Traversable|CommonOrder[]
+     */
+    public function orders(): Traversable;
 }
