@@ -14,6 +14,7 @@ modules:
         - \Helper\Functional
         - Filesystem
     config:
+        bootstrap: functional/_bootstrap.php
         Db:
             dsn: 'mysql:dbname=tdintegration_functional_tests;charset=utf8;host=dbhost'
             user: 'tdintegration'
