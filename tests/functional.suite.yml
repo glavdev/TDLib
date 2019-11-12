@@ -9,5 +9,17 @@ actor: FunctionalTester
 modules:
     enabled:
         # add a framework module here
+        - Db
+        - Asserts
         - \Helper\Functional
-    step_decorators: ~        
+        - Filesystem
+    config:
+        Db:
+            dsn: 'mysql:dbname=tdintegration_functional_tests;charset=utf8;host=dbhost'
+            user: 'tdintegration'
+            password: 'tdintegration'
+            dump:
+                - tests/_data/_dump.sql
+            populate: true
+            cleanup: false
+            populator: 'mysql -hdbhost -u$user -p$password $dbname < $dump'

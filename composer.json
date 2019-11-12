@@ -14,8 +14,16 @@
         "ext-soap": "*",
         "ext-curl": "*",
         "ext-json": "*",
-        "ext-pdo": "*",
-        "codeception/codeception": "*"
+        "ext-pdo": "*"
+    },
+    "require-dev": {
+        "codeception/codeception": "^3.1"
+    },
+    "scripts": {
+        "test": [
+            "vendor/bin/codecept run unit",
+            "vendor/bin/codecept run functional"
+        ]
     },
     "autoload": {
         "psr-4": {
@@ -23,6 +31,6 @@
                 "src/"
             ]
         },
-        "files": ["core/functions.php"]
+        "files": ["src/functions.php"]
     }
 }
