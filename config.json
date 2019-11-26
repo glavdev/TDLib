@@ -1,0 +1,7 @@
+{
+    "dbuser" : "tdintegration",
+    "dbpass" : "tdintegration",
+    "dbname" : "tdintegration_functional_tests",
+    "dbhost" : "dbhost"
+}
+
