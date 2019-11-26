@@ -18,7 +18,7 @@ class TopDeliveryFakeApi implements TopDeliveryApi
     private $params;
     private $answers;
 
-    public function __construct(array $params, object $answers)
+    public function __construct(array $params, array $answers)
     {
         $this->params = $params;
         $this->answers = $answers;
@@ -33,7 +33,7 @@ class TopDeliveryFakeApi implements TopDeliveryApi
      */
     public function doRequest(string $method, array $params = []): stdClass
     {
-        return $this->fakeAnswer($method, $params);
+        return (object)$this->fakeAnswer($method, $params);
     }
 
     private function fakeAnswer(string $method, array $params = []): array
