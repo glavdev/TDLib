@@ -21,6 +21,7 @@ modules:
             password: 'tdintegration'
             dump:
                 - tests/_data/_dump.sql
+                - tests/_data/punkts.sql
             populate: true
             cleanup: false
             populator: 'mysql -hdbhost -u$user -p$password $dbname < $dump'

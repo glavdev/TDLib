@@ -31,11 +31,6 @@ class CommonCreatedOrderTest extends Unit
         $GLOBALS['config']['password'] = 'tdintegration';
         $pdo = getDB();
 
-        // Создю пункт
-        $pdo->query("SET FOREIGN_KEY_CHECKS=0;
-            INSERT INTO `punkts` (`tdId`, `gpId`, `city`) VALUES
-            (500,	'Avtovo-S75',	'SPB');");
-
         // Параметры для отправки API
         $param['order']['orderId'] = 1488;
         // order parts
@@ -73,6 +68,7 @@ class CommonCreatedOrderTest extends Unit
             'pickupAddress' => (object)['id' => 1562],
             'status' => (object)['id' => 1488, 'name' => 'name']
         ];
+        // Новая отправка для того же заказа
         $shipment2 = (object) [
             'shipmentId' => 4,
             'pickupAddress' => (object)['id' => 1562],
