@@ -6,8 +6,10 @@ use Api\TopDelivery\TopDeliveryApi\TopDeliveryFakeApi;
 use Codeception\Test\Unit;
 use FunctionalTester;
 use Integration\CommonCreatedRecord\CommonCreatedOrder;
-use MyPDO;
+use Integration\CommonCreatedRecord\CommonCreatedShipment;
+use Integration\Punkt\PunktStd;
 use TopDelivery\TDOrder\TDOrderStd;
+use TopDelivery\TDShipment\TDShipmentStd;
 
 /**
  * Создание заказа
@@ -21,56 +23,80 @@ class CommonCreatedOrderTest extends Unit
      */
     protected $tester;
 
-//    protected function _before()
-//    {
-//        $this->tester->haveInDatabase("orders", ['td_id' => 15]);
-//    }
-//
-//    protected function _after()
-//    {
-//        getDB()->exec("DELETE FROM orders WHERE td_id=15;");
-//    }
-
     public function testCreate()
     {
-        $pdo = new MyPDO;
-        // Создаем заказ
+        $GLOBALS['config']['dbname'] = 'tdintegration_functional_tests';
+        $GLOBALS['config']['dbhost'] = 'dbhost';
+        $GLOBALS['config']['username'] = 'tdintegration';
+        $GLOBALS['config']['password'] = 'tdintegration';
+        $pdo = getDB();
+
+        // Создю пункт
         $pdo->query("SET FOREIGN_KEY_CHECKS=0;
-        INSERT INTO `orders`
-        (`td_id`, `sku`, `serv`, `gp_status`, `td_status_id`, `td_status_name`, `shipment_id`, `return_shipment_id`,
-        `barcode`, `price`, `td_status`, `payment_type`, `create_date`, `modified_date`, `pkg_partial`,
-        `client_delivery_price`, `weight`, `buyer_fio`, `buyer_phone`, `buyer_address`, `delivery_date`,
-        `comment`, `dst_punkt_id`, `items_count`, `partial_giveout_enabled`, `can_open_box`) VALUES
-        (1488, 'TEST-PKG3-01102019-1606',	'выдача',	'transfering',	3,	'Получен в ТД',	308896,	NULL,
-        '6*TEST-PKG3-01102019-1606',	2000,	NULL,	NULL,	'2019-10-04 12:08:07',	'2019-10-04 12:52:16',	NULL,
-        200,	2,	'Тест Тестов',	'89991112233',	'',	'0000-00-00',	'',	'Avtovo-S75',	'1',	1,	1);");
+            INSERT INTO `punkts` (`tdId`, `gpId`, `city`) VALUES
+            (500,	'Avtovo-S75',	'SPB');");
 
-        $answer =
-        [
-            'td_id' => 1488,
-            'shipment_id' => 3,
-            'sku' => 'testCreate',
-            'barcode' => 'testCreate',
-            'price' => 1500,
-            'td_status_id' => 11,
-            'td_status_name' => 'testCreate',
-            'client_delivery_price' => '14',
+        // Параметры для отправки API
+        $param['order']['orderId'] = 1488;
+        // order parts
+        $items = (object)[
+            'itemId' => 6699698,
+            'name' => 'Товар 1',
+            'article' => 'RU19OFZ11 - 112',
+            'count' => 1,
+            'declaredPrice' => 380,
+            'clientPrice' => 380,
             'weight' => 1,
-            'buyer_fio' => 'test testov',
-            'buyer_phone' => '79502477566',
-            'comment' => 'comment',
-            'dst_punkt_id' => 'Avtovo-S75',
-            'items_count' => 1,
-            'partial_giveout_enabled' => 0,
-            'can_open_box' => 0
+            'push' => 1,
+            'status' => (object)[
+                'id' => 1,
+                'name' => 'Не обработан'
+            ]
         ];
-        $tdOrder = new TDOrderStd(1488, new TopDeliveryFakeApi(['getOrdersInfo' => $answer], ['getOrdersInfo' => $answer]));
+        // Ожидаемый ответ
+        $answer['ordersInfo'] = (object)['orderInfo' => (object)[
+            'orderIdentity' => (object)['orderId' => 1488, 'webshopNumber' => 14556, 'barcode' => 'barcode'],
+            'status' => (object)['id' => 11, 'name' => 'namestatus'],
+            'clientFullCost' => 1500,
+            'clientDeliveryCost' => 150,
+            'deliveryWeight' => (object)['weight' => 1],
+            'clientInfo' => (object)['fio' => 'тест тестов', 'phone' => '79502210575', 'comment' => 'comment'],
+            'pickupAddress' => (object)['id' => 'Avtovo-S75'],
+            'services' => (object)['places' => 1, 'forChoise' => '0', 'notOpen' => 0],
+            'events' => [],
+            'items' => $items,
+        ]];
 
+        // Отправка
+        $shipment = (object) [
+            'shipmentId' => 3,
+            'pickupAddress' => (object)['id' => 1562],
+            'status' => (object)['id' => 1488, 'name' => 'name']
+        ];
+        $shipment2 = (object) [
+            'shipmentId' => 4,
+            'pickupAddress' => (object)['id' => 1562],
+            'status' => (object)['id' => 1488, 'name' => 'name']
+        ];
 
+        $punkt = new PunktStd('Avtovo-S75', $pdo);
+        $tdOrder = new TDOrderStd(1488, new TopDeliveryFakeApi(['getOrdersInfo' => $param], ['getOrdersInfo' => $answer]));
 
-        $commonOrderCreate = (new CommonCreatedOrder($tdOrder, 3, $pdo))->create();
-        print_r($commonOrderCreate);
+        // Создаем отправку
+        (new CommonCreatedShipment( new TDShipmentStd($shipment), $pdo, $punkt))->create();
+        // Создаем заказ
+        $tdId = (new CommonCreatedOrder($tdOrder, 3, $pdo, $punkt))->create();
 
-        $this->tester->assertEquals("", "");
+        // Проверяем, что order.shipment_id = shipment.id 
+        $shipId = $this->tester->grabColumnFromDatabase('orders', 'shipment_id', ['td_id' => $tdId])[0];
+        $this->tester->assertEquals($shipId, 3);
+
+        // Создаем такой же заказ, но с новой отправкой
+        (new CommonCreatedShipment(new TDShipmentStd($shipment2), $pdo, $punkt))->create();
+        $tdId = (new CommonCreatedOrder($tdOrder, 4, $pdo, $punkt))->create();
+
+        // Проверяем, чтоб order.shipment_id обновилость на новую поставку
+        $shipId = $this->tester->grabColumnFromDatabase('orders', 'shipment_id', ['td_id' => $tdId])[0];
+        $this->tester->assertEquals($shipId, 4);
     }
 }
