@@ -37,8 +37,6 @@ class TDOrderStd implements TDOrder
             ]
         ];
         $order = $this->api->doRequest('getOrdersInfo', $params)->ordersInfo;
-//        print_r($order);
-//        exit;
 
         return [
             'tdId' => $order->orderInfo->orderIdentity->orderId,

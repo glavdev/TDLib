@@ -87,7 +87,7 @@ class CommonCreatedOrderTest extends Unit
         // Создаем заказ
         $tdId = (new CommonCreatedOrder($tdOrder, 3, $pdo, $punkt))->create();
 
-        // Проверяем, что order.shipment_id = shipment.id 
+        // Проверяем, что order.shipment_id = shipment.id
         $shipId = $this->tester->grabColumnFromDatabase('orders', 'shipment_id', ['td_id' => $tdId])[0];
         $this->tester->assertEquals($shipId, 3);
 
