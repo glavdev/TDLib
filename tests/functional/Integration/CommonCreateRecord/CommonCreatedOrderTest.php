@@ -25,10 +25,6 @@ class CommonCreatedOrderTest extends Unit
 
     public function testCreate()
     {
-        $GLOBALS['config']['dbname'] = 'tdintegration_functional_tests';
-        $GLOBALS['config']['dbhost'] = 'dbhost';
-        $GLOBALS['config']['username'] = 'tdintegration';
-        $GLOBALS['config']['password'] = 'tdintegration';
         $pdo = getDB();
 
         // Параметры для отправки API
