@@ -47,3 +47,4 @@ function testCompareArray(array $expectedArray, array $actualArray)
 
     return true;
 }
+
