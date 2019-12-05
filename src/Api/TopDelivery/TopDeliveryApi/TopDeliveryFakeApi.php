@@ -42,7 +42,7 @@ class TopDeliveryFakeApi implements TopDeliveryApi
             throw new Exception("В TopDeliveryApi не определён вывод для метода $method");
         }
 
-        if (testCompareArray($this->params[$method], $params)) {
+        if (testLibCompareArray($this->params[$method], $params)) {
             return $this->answers[$method];
         }
 

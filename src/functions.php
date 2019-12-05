@@ -34,11 +34,11 @@ function getTestDB(): PDO
  * @param array $expectedArray
  * @param array $actualArray
  */
-function testCompareArray(array $expectedArray, array $actualArray)
+function testLibCompareArray(array $expectedArray, array $actualArray)
 {
     foreach ($expectedArray as $key => $value) {
         if (is_array($value)) {
-            testCompareArray($value, $actualArray[$key]);
+            testLibCompareArray($value, $actualArray[$key]);
         } elseif ($value != $actualArray[$key]) {
             throw new Exception("Расхождение массивов по ключу $key: получили - " . $actualArray[$key] .
                 ", ожидалось - $value");
