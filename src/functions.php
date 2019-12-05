@@ -5,7 +5,7 @@
  *
  * @return PDO
  */
-function getDB(): PDO
+function getTestDB(): PDO
 {
     //подключение к БД
     static $db;
