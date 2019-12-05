@@ -25,7 +25,7 @@ class CommonCreatedOrderTest extends Unit
 
     public function testCreate()
     {
-        $pdo = getDB();
+        $pdo = getTestDB();
 
         // Параметры для отправки API
         $param['order']['orderId'] = 1488;
