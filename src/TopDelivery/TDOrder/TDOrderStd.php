@@ -3,6 +3,7 @@
 namespace TopDelivery\TDOrder;
 
 use Api\TopDelivery\TopDeliveryApi;
+use Integration\CommonOrder\CommonOrderStd;
 use stdClass;
 use TopDelivery\TDOrder;
 use Traversable;
@@ -43,7 +44,7 @@ class TDOrderStd implements TDOrder
             'tdStatusId' => $order->orderInfo->status->id,
             'tdStatusName' => $order->orderInfo->status->name,
             'serv' => 'выдача',
-            'sku' => $order->orderInfo->orderIdentity->webshopNumber,
+            'sku' => $this->sku($order->orderInfo->orderIdentity->webshopNumber),
             'price' => $order->orderInfo->clientFullCost,
             'primerka' => 0,
             'client_delivery_price' => $order->orderInfo->clientDeliveryCost,
@@ -89,6 +90,24 @@ class TDOrderStd implements TDOrder
                 'barcode' => '',
                 'num' => $item->count
             ];
+        }
+    }
+
+    /**
+     * Получение sku заказа
+     *
+     * Если данный номер заказа уже есть, значит заказ нужно вгрузить с постфиксом " повтор"
+     *
+     * @param string $sku
+     * @return string
+     */
+    private function sku(string $sku): string
+    {
+        try {
+            (new CommonOrderStd($sku, getDB()))->info();
+            return $sku . " повтор";
+        } catch (\Throwable $t) {
+            return $sku;
         }
     }
 }
