@@ -63,7 +63,7 @@ class CommonCreatedOrder implements CommonCreatedRecord
             VALUES (:td_id, :shipment_id, :sku, :barcode, NOW(), :price, :td_status_id, :td_status_name,
             :client_delivery_price, :weight, :buyer_fio, :buyer_phone, :comment, :dst_punkt_id, :items_count,
             :partial_giveout_enabled, :can_open_box) 
-            ON DUPLICATE KEY UPDATE shipment_id=" . $data["shipment_id"];
+            ON DUPLICATE KEY UPDATE shipment_id=" . $data["shipment_id"] . ", gp_status=NULL";
         $query = $this->db->prepare($sql);
         $query->execute($data);
 
