@@ -52,4 +52,14 @@ class PunktByShipment implements Punkt
     {
         return $this->orig->call($this)->city();
     }
+
+    /**
+     * Включён пункт или нет
+     *
+     * @return bool
+     */
+    public function enabled(): bool
+    {
+        return $this->orig->call($this)->enabled();
+    }
 }

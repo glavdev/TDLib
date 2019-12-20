@@ -77,6 +77,7 @@ CREATE TABLE `punkts`
     `tdId` int(11)                           NOT NULL COMMENT 'Идентификатор в TD',
     `gpId` varchar(100) CHARACTER SET latin1 NOT NULL COMMENT 'Идентификатор в ГП',
     `city` varchar(100) CHARACTER SET latin1 NOT NULL COMMENT 'Город нахождения',
+    `enabled` varchar(100) NOT NULL DEFAULT '1' COMMENT 'Включён пункт или нет',
     UNIQUE KEY `id_key` (`tdId`, `gpId`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='Пункты выдачи';
