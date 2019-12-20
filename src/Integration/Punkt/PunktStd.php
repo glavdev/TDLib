@@ -44,6 +44,16 @@ class PunktStd implements Punkt
         return $this->info()['tdId'];
     }
 
+    /**
+     * Включён пункт или нет
+     *
+     * @return bool
+     */
+    public function enabled(): bool
+    {
+        return (bool)$this->info()['enabled'];
+    }
+
     private function info(): array
     {
         if (!$this->info) {

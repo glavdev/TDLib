@@ -29,4 +29,11 @@ interface Punkt
      * @return string
      */
     public function city(): string;
+
+    /**
+     * Включён пункт или нет
+     *
+     * @return bool
+     */
+    public function enabled(): bool;
 }
