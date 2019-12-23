@@ -36,7 +36,7 @@ class GpCreatedShipmentStd implements GpCreatedShipment
             'shipment_options' => [
                 'method' => 'self_delivery',
                 'punkt_id' => $punkt->gpId(),
-                'skip_existed' => true
+                'skip_existed' => '1'
             ],
             'orders' => iterator_to_array($this->orders)
         ];
