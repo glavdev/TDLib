@@ -35,7 +35,8 @@ class GpCreatedShipmentStd implements GpCreatedShipment
         $invoice = [
             'shipment_options' => [
                 'method' => 'self_delivery',
-                'punkt_id' => $punkt->gpId()
+                'punkt_id' => $punkt->gpId(),
+                'skip_existed' => '1'
             ],
             'orders' => iterator_to_array($this->orders)
         ];
