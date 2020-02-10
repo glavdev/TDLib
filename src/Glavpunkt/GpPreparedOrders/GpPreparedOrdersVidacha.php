@@ -63,10 +63,11 @@ class GpPreparedOrdersVidacha implements GpPreparedOrders
         $orderInfo = $order->info();
         $parts = [];
         foreach ($order->parts() as $part) {
+            $insVal = $part['declared_price'] != 0 ? $part['declared_price'] : 0.01;
             $parts[] = [
                 'name' => $part['name'] . " " . $part['id'],
                 'price' => $part['price'],
-                'insurance_val' => $part['declared_price'],
+                'insurance_val' => $insVal,
                 'num' => $part['num'],
                 'weight' => $part['weight'] / 1000
             ];
@@ -92,7 +93,8 @@ class GpPreparedOrdersVidacha implements GpPreparedOrders
     {
         $insuranceVal = 0;
         foreach ($order->parts() as $part) {
-            $insuranceVal += $part['declared_price'] * $part['num'];
+            $insVal = $part['declared_price'] != 0 ? $part['declared_price'] : 0.01;
+            $insuranceVal += $insVal * $part['num'];
         }
 
         return $insuranceVal;
