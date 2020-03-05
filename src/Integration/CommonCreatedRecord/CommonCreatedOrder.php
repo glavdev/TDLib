@@ -69,6 +69,12 @@ class CommonCreatedOrder implements CommonCreatedRecord
         $query->execute($data);
 
         foreach ($order['parts'] as $part) {
+            $sql = "SELECT * FROM `order_part` WHERE order_id = " . $this->db->quote($order['tdId']) .
+                " AND id = " . $this->db->quote($part['id']);
+            $parts = $this->db->query($sql)->fetchAll();
+            if (count($parts) != 0) {
+                continue;
+            }
             $data = [
                 'order_id' => $order['tdId'],
                 'id' => $part['id'],
