@@ -3,7 +3,6 @@
 namespace TopDelivery\TDOrder;
 
 use Api\TopDelivery\TopDeliveryApi;
-use Integration\CommonOrder\CommonOrderStd;
 use stdClass;
 use TopDelivery\TDOrder;
 use Traversable;
